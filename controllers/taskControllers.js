@@ -7,6 +7,7 @@ const createTask = async (req, res) => {
 
   try {
     const task = await taskModel.createTask(userId, taskData);
+    console.log('Task created successfully:', task);
     res.status(201).json({ message: 'Task created successfully', task });
   } catch (error) {
     console.error('Error creating task:', error);
@@ -21,6 +22,7 @@ const getTasks = async (req, res) => {
 
   try {
     const tasks = await taskModel.getTasksByUser(userId, { priority, status }, sortBy);
+    console.log('Tasks fetched successfully:', tasks);
     res.status(200).json(tasks);
   } catch (error) {
     console.error('Error fetching tasks:', error);
@@ -36,6 +38,7 @@ const updateTask = async (req, res) => {
 
   try {
     await taskModel.updateTask(taskId, userId, taskData);
+    console.log('Task updated successfully');
     res.status(200).json({ message: 'Task updated successfully' });
   } catch (error) {
     console.error('Error updating task:', error);
@@ -50,6 +53,7 @@ const deleteTask = async (req, res) => {
 
   try {
     await taskModel.deleteTask(taskIds, userId);
+    console.log('Task deleted successfully');
     res.status(200).json({ message: 'Task deleted successfully' });
   } catch (error) {
     console.error('Error deleting task:', error);
@@ -85,6 +89,19 @@ const getStatistics = async (req, res) => {
       },
       priorityStats,
     });
+
+    console.log({
+      totalTasks: getAllTaskStats?.length,
+      completedTasks,
+      pendingTasks,
+      averageCompletionTime: parseFloat(averageCompletionTime.toFixed(2)) || 0,
+      pendingTaskSummary: {
+        totalLapsedTime: pendingStats[0][0]?.timeLapsed,
+        totalRemainingTime: pendingStats[0][0]?.timeRemaining > 0 ? pendingStats[0][0]?.timeRemaining : 0,
+      },
+      priorityStats,
+    }, 'Statistics fetched successfully');
+    
   } catch (error) {
     console.error('Error fetching statistics:', error);
     res.status(500).json({ message: 'Error fetching statistics', error });
