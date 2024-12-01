@@ -15,7 +15,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  db.migrate.latest();
+app.listen(PORT, async () => {
+  await db.migrate.latest();
   console.log(`Server is running on port ${PORT}`);
 });
