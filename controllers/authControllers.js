@@ -13,7 +13,7 @@ const signup = async (req, res) => {
 
     const createdUser = await userModel.createUser(email, password);
     console.log('User created successfully:', createdUser);
-    res.status(201).json({ message: 'User created successfully' });
+    res.status(201).json({ message: 'User created successfully'});
   } catch (err) {
     console.error('Error during signup:', err);
     res.status(500).json({ message: 'Server error' });
